@@ -133,23 +133,6 @@ AlgebraIntegral.Pool.handler(async ({ event, context }) => {
 	context.AlgebraIntegral_Pool.set(entity)
 }, globalHandlerConfig)
 
-UniswapV2Factory.PairCreated.contractRegister(({ event, context }) => {
-	if (event.params.pair === ADDRESS_ZERO) {
-		context.log.warn("Zero address pair created at tx hash", {
-			event: event.params,
-			source: event.srcAddress,
-			transaction: event.transaction,
-		})
-		return
-	}
-
-	context.addUniswapV2Pair(event.params.pair)
-
-	context.log.info("UniswapV2Factory.PairCreated.contractRegister", {
-		pair: event.params.pair,
-	})
-}, globalHandlerConfig)
-
 UniswapV2Factory.PairCreated.handler(async ({ event, context }) => {
 	const poolId = `${event.chainId}:${event.params.pair}`
 
