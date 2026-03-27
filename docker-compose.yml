@@ -1,5 +1,6 @@
-# Postgres + Hasura + indexer (same layout as Envio codegen’s docker-compose).
+# Postgres + Hasura + indexer + static UI (frontend/).
 # Usage: docker compose up --build
+# UI: http://localhost:${FRONTEND_PORT:-3000} — set PUBLIC_GRAPHQL_URL to a URL your browser can reach (default Hasura http://localhost:8080/v1/graphql).
 # Network is project-scoped (no fixed global name) to avoid stale Docker network errors.
 services:
   envio-postgres:
@@ -75,6 +76,22 @@ services:
       # Inside the container, localhost is not Hasura — use the compose service name
       HASURA_GRAPHQL_ENDPOINT: http://graphql-engine:8080/v1/metadata
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET:-testing}
+    networks:
+      - my-proxy-net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        # URL the *browser* uses for Hasura GraphQL (not a Docker service hostname).
+        PUBLIC_GRAPHQL_URL: ${PUBLIC_GRAPHQL_URL:-http://localhost:8080/v1/graphql}
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    restart: unless-stopped
+    depends_on:
+      graphql-engine:
+        condition: service_healthy
     networks:
       - my-proxy-net
 
