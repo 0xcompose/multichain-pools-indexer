@@ -1,0 +1,15 @@
+node_modules
+generated
+hyperindex
+.pnpm-store
+.git
+.github
+frontend
+.env
+.env.*
+*.md
+benchmarks
+logs
+build
+.pnpm-store
+.DS_Store
