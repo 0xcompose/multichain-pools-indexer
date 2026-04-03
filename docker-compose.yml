@@ -1,6 +1,7 @@
-# Postgres + Hasura + indexer + static UI (frontend/).
+# Postgres + Hasura + indexer + token-api + static UI (frontend/).
 # Usage: docker compose up --build
 # UI: http://localhost:${FRONTEND_PORT:-3000} — set PUBLIC_GRAPHQL_URL to a URL your browser can reach (default Hasura http://localhost:8080/v1/graphql).
+# Token metadata JSON-RPC is same-origin: POST http://localhost:${FRONTEND_PORT:-3000}/__token-metadata__ → token-api /rpc (no CORS).
 # Network is project-scoped (no fixed global name) to avoid stale Docker network errors.
 services:
   envio-postgres:
@@ -54,6 +55,28 @@ services:
     networks:
       - my-proxy-net
 
+  token-api:
+    build:
+      context: ./token-api
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - token_api_data:/data
+    environment:
+      RUST_LOG: ${TOKEN_API_RUST_LOG:-info}
+      HOST: "0.0.0.0"
+      PORT: "8080"
+      WORKERS: ${TOKEN_API_WORKERS:-2}
+      DATABASE_URL: file:/data/token-api.db
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://127.0.0.1:8080/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    networks:
+      - my-proxy-net
+
   indexer:
     build: .
     restart: on-failure
@@ -72,7 +95,7 @@ services:
       ENVIO_PG_PASSWORD: ${ENVIO_PG_PASSWORD:-testing}
       ENVIO_PG_DATABASE: ${ENVIO_PG_DATABASE:-envio-dev}
       ENVIO_INDEXER_PORT: ${ENVIO_INDEXER_PORT:-9898}
-      TUI_OFF: "false"
+      TUI_OFF: "true"
       # Inside the container, localhost is not Hasura — use the compose service name
       HASURA_GRAPHQL_ENDPOINT: http://graphql-engine:8080/v1/metadata
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET:-testing}
@@ -86,17 +109,22 @@ services:
       args:
         # URL the *browser* uses for Hasura GraphQL (not a Docker service hostname).
         PUBLIC_GRAPHQL_URL: ${PUBLIC_GRAPHQL_URL:-http://localhost:8080/v1/graphql}
+        # Same-origin path; nginx proxies to token-api (see frontend/nginx.conf).
+        PUBLIC_TOKEN_METADATA_RPC_URL: ${PUBLIC_TOKEN_METADATA_RPC_URL:-/__token-metadata__}
     ports:
       - "${FRONTEND_PORT:-3000}:80"
     restart: unless-stopped
     depends_on:
       graphql-engine:
         condition: service_healthy
+      token-api:
+        condition: service_healthy
     networks:
       - my-proxy-net
 
 volumes:
   db_data:
+  token_api_data:
 
 networks:
   my-proxy-net:
