@@ -68,8 +68,24 @@ contracts:
 
 # Network-specific configurations
 networks:
-  # - id: 1
-  #   start_block: 0
+  - id: 122
+    rpc_config:
+      url: https://rpc.fuse.io
+    start_block: 7000000
+    contracts: &all-contracts
+      - name: UniswapV2Factory
+      # - name: UniswapV2Pair
+      - name: UniswapV3Factory
+      - name: PoolManager
+      - name: CLPoolManager
+      - name: AlgebraIntegral
+      - name: BalancerV2Vault
+      - name: BalancerV3Vault
+      - name: VelodromeSlipstreamCLFactory
+      - name: VelodromeCPMMFactory
+  - id: 1
+    start_block: 0
+    contracts: *all-contracts
     
   # - id: 42161
   #   rpc_config:
@@ -136,21 +152,6 @@ networks:
   #     url: https://mainnet.evm.nodes.onflow.org
   #   start_block: 0
   #   contracts: *all-contracts
-  - id: 122
-    rpc_config:
-      url: https://rpc.fuse.io
-    start_block: 7000000
-    contracts: &all-contracts
-      - name: UniswapV2Factory
-      # - name: UniswapV2Pair
-      - name: UniswapV3Factory
-      - name: PoolManager
-      - name: CLPoolManager
-      - name: AlgebraIntegral
-      - name: BalancerV2Vault
-      - name: BalancerV3Vault
-      - name: VelodromeSlipstreamCLFactory
-      - name: VelodromeCPMMFactory
   - id: 38833
     rpc_config:
       url: https://rpc.igralabs.com:8545
@@ -189,6 +190,11 @@ networks:
   - id: 25363
     rpc_config:
       url: https://rpc.fluent.xyz
+    start_block: 0
+    contracts: *all-contracts
+  - id: 2028
+    rpc_config:
+      url: https://rpc.armascan.io
     start_block: 0
     contracts: *all-contracts
   
