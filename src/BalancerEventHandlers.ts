@@ -22,7 +22,7 @@ BalancerV2Vault.PoolRegistered.handler(async ({ event, context }) => {
 		id: poolId,
 		chainId: event.chainId,
 		address: event.params.poolAddress,
-		protocol: "BalancerV2",
+		protocol: Protocol.BalancerV2,
 		creatorContract: event.srcAddress,
 		createdAt: event.block.timestamp,
 		createdAtBlock: event.block.number,

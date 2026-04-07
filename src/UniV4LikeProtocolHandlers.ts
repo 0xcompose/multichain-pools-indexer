@@ -16,6 +16,7 @@ import {
 import { globalHandlerConfig } from "./handlerConfig"
 import { getEventId } from "./eventId"
 import { getTokenId } from "./tokenId"
+import { Protocol } from "./protocols"
 
 type EventWithCurrency0AndCurrency1 = {
 	chainId: number
@@ -29,7 +30,7 @@ async function addCurrencies0And1AndPoolTokens(
 	poolId: string,
 	event: EventWithCurrency0AndCurrency1,
 	context: HandlerContext,
-	protocol: string,
+	protocol: Protocol,
 ): Promise<void> {
 	const token0Id = getTokenId(event.chainId, event.params.currency0)
 	const token1Id = getTokenId(event.chainId, event.params.currency1)
@@ -98,13 +99,18 @@ PoolManager.Initialize.handler(async ({ event, context }) => {
 		id: poolId,
 		chainId: event.chainId,
 		address: event.params.id,
-		protocol: "UniswapV4",
+		protocol: Protocol.UniswapV4,
 		creatorContract: event.srcAddress,
 		createdAt: event.block.timestamp,
 		createdAtBlock: event.block.number,
 	})
 
-	await addCurrencies0And1AndPoolTokens(poolId, event, context, "UniswapV4")
+	await addCurrencies0And1AndPoolTokens(
+		poolId,
+		event,
+		context,
+		Protocol.UniswapV4,
+	)
 
 	context.UniV4PoolManager_Initialize.set(entity)
 }, globalHandlerConfig)
@@ -128,14 +134,14 @@ CLPoolManager.Initialize.handler(async ({ event, context }) => {
 		poolId,
 		event,
 		context,
-		"PancakeSwapInfinity",
+		Protocol.PancakeSwapInfinity,
 	)
 
 	context.Pool.set({
 		id: poolId,
 		chainId: event.chainId,
 		address: event.params.id,
-		protocol: "PancakeSwapInfinity",
+		protocol: Protocol.PancakeSwapInfinity,
 		creatorContract: event.srcAddress,
 		createdAt: event.block.timestamp,
 		createdAtBlock: event.block.number,
