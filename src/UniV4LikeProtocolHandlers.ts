@@ -1,12 +1,7 @@
 /*
  * Please refer to https://docs.envio.dev for a thorough guide on all Envio indexer features
  */
-import {
-	UniV4PoolManager_Initialize,
-	PoolManager,
-	CLPoolManager_Initialize,
-	CLPoolManager,
-} from "generated"
+import { PoolManager, CLPoolManager } from "generated"
 import { HandlerContext } from "generated/src/Types"
 import {
 	incrementChainMetricsForPool,
@@ -14,9 +9,9 @@ import {
 	setTokenWithPoolCount,
 } from "./metrics"
 import { globalHandlerConfig } from "./handlerConfig"
-import { getEventId } from "./eventId"
 import { getTokenId } from "./tokenId"
 import { Protocol } from "./protocols"
+import { getPoolId, PoolId } from "./poolId"
 
 type EventWithCurrency0AndCurrency1 = {
 	chainId: number
@@ -27,7 +22,7 @@ type EventWithCurrency0AndCurrency1 = {
 }
 
 async function addCurrencies0And1AndPoolTokens(
-	poolId: string,
+	poolId: PoolId,
 	event: EventWithCurrency0AndCurrency1,
 	context: HandlerContext,
 	protocol: Protocol,
@@ -81,22 +76,10 @@ async function addCurrencies0And1AndPoolTokens(
 }
 
 PoolManager.Initialize.handler(async ({ event, context }) => {
-	const poolId = `${event.chainId}:${event.params.id}`
-
-	const entity: UniV4PoolManager_Initialize = {
-		id: getEventId(event),
-		poolId: event.params.id,
-		currency0: event.params.currency0,
-		currency1: event.params.currency1,
-		fee: event.params.fee,
-		tickSpacing: event.params.tickSpacing,
-		hooks: event.params.hooks,
-		sqrtPriceX96: event.params.sqrtPriceX96,
-		tick: event.params.tick,
-	}
+	const id = getPoolId(event.chainId, event.params.id)
 
 	context.Pool.set({
-		id: poolId,
+		id,
 		chainId: event.chainId,
 		address: event.params.id,
 		protocol: Protocol.UniswapV4,
@@ -106,39 +89,32 @@ PoolManager.Initialize.handler(async ({ event, context }) => {
 	})
 
 	await addCurrencies0And1AndPoolTokens(
-		poolId,
+		id,
 		event,
 		context,
 		Protocol.UniswapV4,
 	)
 
-	context.UniV4PoolManager_Initialize.set(entity)
+	context.UniswapV4PoolImmutables.set({
+		id,
+		fee: event.params.fee,
+		tickSpacing: event.params.tickSpacing,
+		hooks: event.params.hooks,
+	})
 }, globalHandlerConfig)
 
 CLPoolManager.Initialize.handler(async ({ event, context }) => {
-	const poolId = `${event.chainId}:${event.params.id}`
-
-	const entity: CLPoolManager_Initialize = {
-		id: getEventId(event),
-		poolId: event.params.id,
-		currency0: event.params.currency0,
-		currency1: event.params.currency1,
-		hooks: event.params.hooks,
-		fee: event.params.fee,
-		parameters: event.params.parameters,
-		sqrtPriceX96: event.params.sqrtPriceX96,
-		tick: event.params.tick,
-	}
+	const id = getPoolId(event.chainId, event.params.id)
 
 	await addCurrencies0And1AndPoolTokens(
-		poolId,
+		id,
 		event,
 		context,
 		Protocol.PancakeSwapInfinity,
 	)
 
 	context.Pool.set({
-		id: poolId,
+		id,
 		chainId: event.chainId,
 		address: event.params.id,
 		protocol: Protocol.PancakeSwapInfinity,
@@ -147,5 +123,10 @@ CLPoolManager.Initialize.handler(async ({ event, context }) => {
 		createdAtBlock: event.block.number,
 	})
 
-	context.CLPoolManager_Initialize.set(entity)
+	context.PancakeSwapInfinityPoolImmutables.set({
+		id,
+		fee: event.params.fee,
+		hooks: event.params.hooks,
+		parameters: event.params.parameters,
+	})
 }, globalHandlerConfig)

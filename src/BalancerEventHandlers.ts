@@ -4,13 +4,13 @@ import {
 	incrementChainMetricsTokenCount,
 	setTokenWithPoolCount,
 } from "./metrics"
-import { getEventId } from "./eventId"
 import { getTokenId } from "./tokenId"
 import { globalHandlerConfig } from "./handlerConfig"
 import { Protocol } from "./protocols"
+import { getPoolId } from "./poolId"
 
 BalancerV2Vault.PoolRegistered.handler(async ({ event, context }) => {
-	const poolId = `${event.chainId}:${event.params.poolId}`
+	const id = getPoolId(event.chainId, event.params.poolId)
 
 	await incrementChainMetricsForPool(
 		context,
@@ -19,7 +19,7 @@ BalancerV2Vault.PoolRegistered.handler(async ({ event, context }) => {
 	)
 
 	context.Pool.set({
-		id: poolId,
+		id,
 		chainId: event.chainId,
 		address: event.params.poolAddress,
 		protocol: Protocol.BalancerV2,
@@ -28,16 +28,14 @@ BalancerV2Vault.PoolRegistered.handler(async ({ event, context }) => {
 		createdAtBlock: event.block.number,
 	})
 
-	context.BalancerV2Vault_PoolRegistered.set({
-		id: getEventId(event),
-		poolId: event.params.poolId,
-		poolAddress: event.params.poolAddress,
+	context.BalancerV2PoolImmutables.set({
+		id,
 		specialization: event.params.specialization.toString(),
 	})
 }, globalHandlerConfig)
 
 BalancerV3Vault.PoolRegistered.handler(async ({ event, context }) => {
-	const poolId = `${event.chainId}:${event.params.pool}`
+	const id = getPoolId(event.chainId, event.params.pool)
 
 	await incrementChainMetricsForPool(
 		context,
@@ -46,7 +44,7 @@ BalancerV3Vault.PoolRegistered.handler(async ({ event, context }) => {
 	)
 
 	context.Pool.set({
-		id: poolId,
+		id,
 		chainId: event.chainId,
 		address: event.params.pool,
 		protocol: Protocol.BalancerV3,
@@ -57,9 +55,11 @@ BalancerV3Vault.PoolRegistered.handler(async ({ event, context }) => {
 
 	const tokenConfigs = event.params.tokenConfig
 	let newTokenCount = 0
+
 	for (let i = 0; i < tokenConfigs.length; i++) {
 		const tokenAddress = tokenConfigs[i][0]
 		const tokenId = getTokenId(event.chainId, tokenAddress)
+
 		const { isNew } = await setTokenWithPoolCount(
 			context,
 			tokenId,
@@ -70,8 +70,8 @@ BalancerV3Vault.PoolRegistered.handler(async ({ event, context }) => {
 		if (isNew) newTokenCount++
 
 		context.PoolToken.set({
-			id: `${poolId}:${tokenId}:${i}`,
-			pool_id: poolId,
+			id: `${id}:${tokenId}:${i}`,
+			pool_id: id,
 			token_id: tokenId,
 			tokenIndex: i,
 		})
@@ -84,9 +84,8 @@ BalancerV3Vault.PoolRegistered.handler(async ({ event, context }) => {
 		)
 	}
 
-	context.BalancerV3Vault_PoolRegistered.set({
-		id: getEventId(event),
-		pool_id: poolId,
+	context.BalancerV3PoolImmutables.set({
+		id,
 		factory: event.params.factory,
 		swapFeePercentage: event.params.swapFeePercentage,
 	})
