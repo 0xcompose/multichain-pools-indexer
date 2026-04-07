@@ -11,7 +11,7 @@ import {
 import { globalHandlerConfig } from "./handlerConfig"
 import { getTokenId } from "./tokenId"
 import { Protocol } from "./protocols"
-import { getPoolId, PoolId } from "./poolId"
+import { getPoolId, getPoolTokenId, PoolId } from "./poolId"
 
 type EventWithCurrency0AndCurrency1 = {
 	chainId: number
@@ -59,14 +59,14 @@ async function addCurrencies0And1AndPoolTokens(
 	}
 
 	context.PoolToken.set({
-		id: `${poolId}:${token0Id}:0`,
+		id: getPoolTokenId(poolId, 0),
 		pool_id: poolId,
 		token_id: token0Id,
 		tokenIndex: 0,
 	})
 
 	context.PoolToken.set({
-		id: `${poolId}:${token1Id}:1`,
+		id: getPoolTokenId(poolId, 1),
 		pool_id: poolId,
 		token_id: token1Id,
 		tokenIndex: 1,

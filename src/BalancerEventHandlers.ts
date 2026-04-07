@@ -7,7 +7,7 @@ import {
 import { getTokenId } from "./tokenId"
 import { globalHandlerConfig } from "./handlerConfig"
 import { Protocol } from "./protocols"
-import { getPoolId } from "./poolId"
+import { getPoolId, getPoolTokenId } from "./poolId"
 
 BalancerV2Vault.PoolRegistered.handler(async ({ event, context }) => {
 	const id = getPoolId(event.chainId, event.params.poolId)
@@ -70,7 +70,7 @@ BalancerV3Vault.PoolRegistered.handler(async ({ event, context }) => {
 		if (isNew) newTokenCount++
 
 		context.PoolToken.set({
-			id: `${id}:${tokenId}:${i}`,
+			id: getPoolTokenId(id, i),
 			pool_id: id,
 			token_id: tokenId,
 			tokenIndex: i,
