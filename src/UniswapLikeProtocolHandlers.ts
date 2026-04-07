@@ -8,83 +8,20 @@ import {
 	VelodromeSlipstreamCLFactory,
 	VelodromeCPMMFactory,
 } from "generated"
-import { HandlerContext } from "generated/src/Types"
-import {
-	incrementChainMetricsForPool,
-	incrementChainMetricsTokenCount,
-	setTokenWithPoolCount,
-} from "./metrics"
 import { globalHandlerConfig } from "./handlerConfig"
-import { getTokenId } from "./tokenId"
 import { Protocol } from "./protocols"
-import { getPoolId, getPoolTokenId, PoolId } from "./poolId"
-
-type EventWithToken0AndToken1 = {
-	chainId: number
-	params: {
-		token0: string
-		token1: string
-	}
-}
-
-async function addTokens0And1AndPoolTokens(
-	poolId: PoolId,
-	event: EventWithToken0AndToken1,
-	context: HandlerContext,
-	protocol: Protocol,
-): Promise<void> {
-	const token0Id = getTokenId(event.chainId, event.params.token0)
-	const token1Id = getTokenId(event.chainId, event.params.token1)
-
-	const r0 = await setTokenWithPoolCount(
-		context,
-		token0Id,
-		event.chainId,
-		event.params.token0,
-		1,
-	)
-	const r1 = await setTokenWithPoolCount(
-		context,
-		token1Id,
-		event.chainId,
-		event.params.token1,
-		1,
-	)
-	let newTokenCount = 0
-	if (r0.isNew) newTokenCount++
-	if (r1.isNew) newTokenCount++
-	if (newTokenCount > 0) {
-		await incrementChainMetricsTokenCount(
-			context,
-			event.chainId,
-			newTokenCount,
-		)
-	}
-
-	context.PoolToken.set({
-		id: getPoolTokenId(poolId, 0),
-		pool_id: poolId,
-		token_id: token0Id,
-		tokenIndex: 0,
-	})
-
-	context.PoolToken.set({
-		id: getPoolTokenId(poolId, 1),
-		pool_id: poolId,
-		token_id: token1Id,
-		tokenIndex: 1,
-	})
-
-	await incrementChainMetricsForPool(context, event.chainId, protocol)
-}
+import { getPoolId } from "./poolId"
+import { addTwoAssetPoolTokensAndMetrics } from "./twoAssetPoolTokens"
 
 AlgebraIntegral.CustomPool.handler(async ({ event, context }) => {
 	const id = getPoolId(event.chainId, event.params.pool)
 
-	await addTokens0And1AndPoolTokens(
-		id,
-		event,
+	await addTwoAssetPoolTokensAndMetrics(
 		context,
+		event.chainId,
+		id,
+		event.params.token0,
+		event.params.token1,
 		Protocol.AlgebraIntegral,
 	)
 
@@ -108,10 +45,12 @@ AlgebraIntegral.CustomPool.handler(async ({ event, context }) => {
 AlgebraIntegral.Pool.handler(async ({ event, context }) => {
 	const id = getPoolId(event.chainId, event.params.pool)
 
-	await addTokens0And1AndPoolTokens(
-		id,
-		event,
+	await addTwoAssetPoolTokensAndMetrics(
 		context,
+		event.chainId,
+		id,
+		event.params.token0,
+		event.params.token1,
 		Protocol.AlgebraIntegral,
 	)
 
@@ -136,7 +75,14 @@ AlgebraIntegral.Pool.handler(async ({ event, context }) => {
 UniswapV2Factory.PairCreated.handler(async ({ event, context }) => {
 	const id = getPoolId(event.chainId, event.params.pair)
 
-	await addTokens0And1AndPoolTokens(id, event, context, Protocol.UniswapV2)
+	await addTwoAssetPoolTokensAndMetrics(
+		context,
+		event.chainId,
+		id,
+		event.params.token0,
+		event.params.token1,
+		Protocol.UniswapV2,
+	)
 
 	context.Pool.set({
 		id,
@@ -152,7 +98,14 @@ UniswapV2Factory.PairCreated.handler(async ({ event, context }) => {
 UniswapV3Factory.PoolCreated.handler(async ({ event, context }) => {
 	const id = getPoolId(event.chainId, event.params.pool)
 
-	await addTokens0And1AndPoolTokens(id, event, context, Protocol.UniswapV3)
+	await addTwoAssetPoolTokensAndMetrics(
+		context,
+		event.chainId,
+		id,
+		event.params.token0,
+		event.params.token1,
+		Protocol.UniswapV3,
+	)
 
 	context.Pool.set({
 		id,
@@ -174,10 +127,12 @@ UniswapV3Factory.PoolCreated.handler(async ({ event, context }) => {
 VelodromeSlipstreamCLFactory.PoolCreated.handler(async ({ event, context }) => {
 	const id = getPoolId(event.chainId, event.params.pool)
 
-	await addTokens0And1AndPoolTokens(
-		id,
-		event,
+	await addTwoAssetPoolTokensAndMetrics(
 		context,
+		event.chainId,
+		id,
+		event.params.token0,
+		event.params.token1,
 		Protocol.VelodromeSlipstreamCL,
 	)
 
@@ -200,10 +155,12 @@ VelodromeSlipstreamCLFactory.PoolCreated.handler(async ({ event, context }) => {
 VelodromeCPMMFactory.PoolCreated.handler(async ({ event, context }) => {
 	const id = getPoolId(event.chainId, event.params.pool)
 
-	await addTokens0And1AndPoolTokens(
-		id,
-		event,
+	await addTwoAssetPoolTokensAndMetrics(
 		context,
+		event.chainId,
+		id,
+		event.params.token0,
+		event.params.token1,
 		Protocol.VelodromeCPMM,
 	)
 
