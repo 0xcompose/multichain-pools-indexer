@@ -26,7 +26,6 @@ type Pool {
 	protocol: DexProtocol!
 	creatorContract: String!
 	poolTokens: [PoolToken!]! @derivedFrom(field: "pool")
-	# creationTxHash: String!
 	createdAt: Int!
 	createdAtBlock: Int!
 }
