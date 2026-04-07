@@ -1,1 +1,7 @@
 .env
+
+# Under vendor/<repo>/, index only src/ (ignore cloned contract noise: tests, build, node_modules, etc.)
+vendor/*
+!vendor/*/
+!vendor/*/src/
+!vendor/*/src/**
