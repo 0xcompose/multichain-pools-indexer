@@ -1,3 +1,6 @@
 [submodule "frontend"]
 	path = frontend
 	url = https://github.com/0xcompose/indexer-front-end.git
+[submodule "token-api"]
+	path = token-api
+	url = https://github.com/SpreadSolvers/token-api.git
