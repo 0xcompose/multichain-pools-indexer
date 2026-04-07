@@ -83,20 +83,42 @@ networks:
       - name: BalancerV3Vault
       - name: VelodromeSlipstreamCLFactory
       - name: VelodromeCPMMFactory
+  
   - id: 1
     start_block: 0
     contracts: *all-contracts
     
-  # - id: 42161
-  #   rpc_config:
-  #     url: https://arb1.arbitrum.io/rpc
-  #   start_block: 0
-  #   contracts: *all-contracts
-  # - id: 8453
-  #   rpc_config:
-  #     url: https://base.llamarpc.com
-  #   start_block: 0
-  #   contracts: *all-contracts
+  - id: 42161
+    start_block: 0
+    contracts: *all-contracts
+  - id: 8453
+    start_block: 0
+    contracts: *all-contracts
+
+  - id: 38833
+    rpc_config:
+      url: https://rpc.igralabs.com:8545
+    start_block: 0
+    contracts: *all-contracts
+
+  - id: 88888
+    rpc_config: 
+      url: https://rpc.chiliz.com
+    start_block: 0
+    contracts: *all-contracts
+  
+  - id: 202555
+    rpc_config:
+      url: https://evmrpc.kasplex.org
+    start_block: 0
+    contracts: *all-contracts
+
+  - id: 1514
+    rpc_config:
+      url: https://mainnet.storyrpc.io
+    start_block: 0
+    contracts: *all-contracts
+  
   # - id: 988
   #   rpc_config:
   #     url: https://rpc.stable.xyz
@@ -107,21 +129,21 @@ networks:
   #     url: https://api.mainnet.abs.xyz
   #   start_block: 0
   #   contracts: *all-contracts
-  # - id: 33139
-  #   rpc_config:
-  #     url: https://rpc.apechain.com
-  #   start_block: 0
-  #   contracts: *all-contracts
+  - id: 33139
+    rpc_config:
+      url: https://rpc.apechain.com
+    start_block: 0
+    contracts: *all-contracts
   # - id: 80094
   #   rpc_config:
   #     url: https://rpc.berachain.com
   #   start_block: 0
   #   contracts: *all-contracts
-  # - id: 3637
-  #   rpc_config:
-  #     url: https://rpc.ankr.com/botanix_mainnet
-  #   start_block: 0
-  #   contracts: *all-contracts
+  - id: 3637
+    rpc_config:
+      url: https://rpc.ankr.com/botanix_mainnet
+    start_block: 0
+    contracts: *all-contracts
   # - id: 484
   #   rpc_config:
   #     url: https://rpc.camp.raas.gelato.cloud
@@ -132,87 +154,68 @@ networks:
   #     url: https://evm.cronos.org
   #   start_block: 0
   #   contracts: *all-contracts
-  # - id: 666666666
-  #   rpc_config:
-  #     url: https://rpc.degen.tips
-  #   start_block: 0
-  #   contracts: *all-contracts
+  - id: 666666666
+    rpc_config:
+      url: https://rpc.degen.tips
+    start_block: 0
+    contracts: *all-contracts
   # - id: 97477
   #   rpc_config:
   #     url: https://doma.drpc.org
   #   start_block: 0
   #   contracts: *all-contracts
-  # - id: 14
-  #   rpc_config:
-  #     url: https://rpc.ankr.com/flare
-  #   start_block: 0
-  #   contracts: *all-contracts
+  - id: 14
+    rpc_config:
+      url: https://rpc.ankr.com/flare
+    start_block: 0
+    contracts: *all-contracts
   # - id: 747
   #   rpc_config:
   #     url: https://mainnet.evm.nodes.onflow.org
   #   start_block: 0
   #   contracts: *all-contracts
-  - id: 38833
-    rpc_config:
-      url: https://rpc.igralabs.com:8545
-    start_block: 0
-    contracts: *all-contracts
+  
   # - id: 99110
   #   rpc_config:
   #     url: https://mainnet-rpc.dorsenscan.io
   #   start_block: 0
   #   contracts: *all-contracts
-  - id: 88788
-    rpc_config:
-      url: https://mainnet.ptekcoin.com
-    start_block: 0
-    contracts: *all-contracts
+  # - id: 88788
+  #   rpc_config:
+  #     url: https://mainnet.ptekcoin.com
+  #   start_block: 0
+  #   contracts: *all-contracts
   # - id: 26217
   #   rpc_config:
   #     url: https://evm.integralayer.com
   #   start_block: 0
   #   contracts: *all-contracts
-  - id: 12082025
-    rpc_config:
-      url: https://rpc.onfachain.com
-    start_block: 0
-    contracts: *all-contracts
-  - id: 88888
-    rpc_config: 
-      url: https://rpc.chiliz.com
-    start_block: 0
-    contracts: *all-contracts
-  - id: 202555
-    rpc_config:
-      url: https://evmrpc.kasplex.org
-    start_block: 0
-    contracts: *all-contracts
-  - id: 25363
-    rpc_config:
-      url: https://rpc.fluent.xyz
-    start_block: 0
-    contracts: *all-contracts
-  - id: 2028
-    rpc_config:
-      url: https://rpc.armascan.io
-    start_block: 0
-    contracts: *all-contracts
-  
-  # - id: 1300
+  # - id: 12082025
   #   rpc_config:
-  #     url: https://rpc.glue.net
+  #     url: https://rpc.onfachain.com
   #   start_block: 0
   #   contracts: *all-contracts
+  # - id: 25363
+  #   rpc_config:
+  #     url: https://rpc.fluent.xyz
+  #   start_block: 0
+  #   contracts: *all-contracts
+  
+  - id: 1300
+    rpc_config:
+      url: https://rpc.glue.net
+    start_block: 0
+    contracts: *all-contracts
   # - id: 100
   #   rpc_config:
   #     url: https://rpc.gnosischain.com
   #   start_block: 0
   #   contracts: *all-contracts
-  # - id: 2345
-  #   rpc_config:
-  #     url: https://rpc.goat.network
-  #   start_block: 0
-  #   contracts: *all-contracts
+  - id: 2345
+    rpc_config:
+      url: https://rpc.goat.network
+    start_block: 0
+    contracts: *all-contracts
   # - id: 1625
   #   rpc_config:
   #     url: https://rpc.ankr.com/gravity
@@ -223,11 +226,11 @@ networks:
   #     url: https://hedera.linkpool.pro
   #   start_block: 0
   #   contracts: *all-contracts
-  # - id: 43111
-  #   rpc_config:
-  #     url: https://rpc.hemi.network/rpc
-  #   start_block: 0
-  #   contracts: *all-contracts
+  - id: 43111
+    rpc_config:
+      url: https://rpc.hemi.network/rpc
+    start_block: 0
+    contracts: *all-contracts
   # - id: 8822
   #   rpc_config:
   #     url: https://json-rpc.evm.iotaledger.net
@@ -278,11 +281,9 @@ networks:
   #     url: https://gatelayer-mainnet.gatenode.cc
   #   start_block: 0
   #   contracts: *all-contracts
-  # - id: 10
-  #   rpc_config:
-  #     url: https://mainnet.optimism.io
-  #   start_block: 0
-  #   contracts: *all-contracts
+  - id: 10
+    start_block: 0
+    contracts: *all-contracts
   # - id: 3338
   #   rpc_config:
   #     url: https://quicknode1.peaq.xyz
@@ -331,11 +332,6 @@ networks:
   #     url: https://rpc.soneium.org
   #   start_block: 0
   #   contracts: *all-contracts
-  # - id: 1514
-  #   rpc_config:
-  #     url: https://mainnet.storyrpc.io
-  #   start_block: 0
-  #   contracts: *all-contracts
   # - id: 1923
   #   rpc_config:
   #     url: https://rpc.ankr.com/swell
@@ -376,11 +372,9 @@ networks:
   #     url: https://api.avax.network/ext/bc/C/rpc
   #   start_block: 0
   #   contracts: *all-contracts
-  # - id: 56
-  #   rpc_config:
-  #     url: https://binance.llamarpc.com
-  #   start_block: 0
-  #   contracts: *all-contracts
+  - id: 56
+    start_block: 0
+    contracts: *all-contracts
   # - id: 1116
   #   rpc_config:
   #     url: https://rpc.coredao.org
@@ -406,11 +400,11 @@ networks:
   #     url: https://rpc.orderly.network
   #   start_block: 0
   #   contracts: *all-contracts
-  # - id: 137
-  #   rpc_config:
-  #     url: https://rpc-mainnet.matic.quiknode.pro
-  #   start_block: 0
-  #   contracts: *all-contracts
+  - id: 137
+    rpc_config:
+      url: https://rpc-mainnet.matic.quiknode.pro
+    start_block: 0
+    contracts: *all-contracts
   # - id: 1380012617
   #   rpc_config:
   #     url: https://mainnet.rpc.rarichain.org/http
