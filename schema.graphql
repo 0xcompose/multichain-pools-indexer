@@ -26,6 +26,7 @@ type Pool {
 	protocol: DexProtocol!
 	creatorContract: String!
 	poolTokens: [PoolToken!]! @derivedFrom(field: "pool")
+	creationTxHash: String!
 	createdAt: Int!
 	createdAtBlock: Int!
 }
@@ -36,6 +37,8 @@ type PoolToken {
 	token: Token! @index
 	tokenIndex: Int!
 }
+
+### EVENTS ENTITIES (USED FOR INDEXING, BUT NOT ACTUALLY STORED!) ###
 
 type AlgebraIntegral_CustomPool {
 	id: ID!
@@ -58,49 +61,6 @@ type UniswapV2Factory_PairCreated {
 	token1: String!
 	pair: String!
 	pairNumber: BigInt!
-}
-
-type UniswapV2Pool_Swap {
-	id: ID!
-	pool: String! @index
-	sender: String!
-	amount0In: BigInt!
-	amount1In: BigInt!
-	amount0Out: BigInt!
-	amount1Out: BigInt!
-	to: String!
-	createdAt: Int!
-	createdAtBlock: Int!
-}
-
-type UniswapV2Pool_Mint {
-	id: ID!
-	pool: String! @index
-	sender: String!
-	amount0: BigInt!
-	amount1: BigInt!
-	createdAt: Int!
-	createdAtBlock: Int!
-}
-
-type UniswapV2Pool_Burn {
-	id: ID!
-	pool: String! @index
-	sender: String!
-	amount0: BigInt!
-	amount1: BigInt!
-	to: String!
-	createdAt: Int!
-	createdAtBlock: Int!
-}
-
-type UniswapV2Pool_Sync {
-	id: ID!
-	pool: String! @index
-	reserve0: BigInt!
-	reserve1: BigInt!
-	createdAt: Int!
-	createdAtBlock: Int!
 }
 
 type PoolLatestReserves {
@@ -175,6 +135,8 @@ type BalancerV3Vault_PoolRegistered {
 	factory: String!
 	swapFeePercentage: BigInt!
 }
+
+### METRICS ###
 
 type ChainMetrics {
 	id: ID!
