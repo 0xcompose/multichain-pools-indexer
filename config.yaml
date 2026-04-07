@@ -85,6 +85,14 @@ networks:
       - name: VelodromeCPMMFactory
   
   - id: 1
+    start_block: 10008355
+    contracts: *all-contracts
+
+  - id: 56
+    start_block: 300000
+    contracts: *all-contracts
+
+  - id: 10
     start_block: 0
     contracts: *all-contracts
     
@@ -281,9 +289,6 @@ networks:
   #     url: https://gatelayer-mainnet.gatenode.cc
   #   start_block: 0
   #   contracts: *all-contracts
-  - id: 10
-    start_block: 0
-    contracts: *all-contracts
   # - id: 3338
   #   rpc_config:
   #     url: https://quicknode1.peaq.xyz
@@ -372,9 +377,6 @@ networks:
   #     url: https://api.avax.network/ext/bc/C/rpc
   #   start_block: 0
   #   contracts: *all-contracts
-  - id: 56
-    start_block: 0
-    contracts: *all-contracts
   # - id: 1116
   #   rpc_config:
   #     url: https://rpc.coredao.org
