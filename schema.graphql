@@ -38,6 +38,57 @@ type PoolToken {
 	tokenIndex: Int!
 }
 
+### POOL IMMUTABLES ###
+
+# UniswapV2 doesn't have any valuable immutables
+
+type UniswapV3PoolImmutables {
+	id: ID!
+	fee: BigInt!
+	tickSpacing: BigInt!
+}
+
+type UniswapV4PoolImmutables {
+	id: ID!
+	fee: BigInt!
+	tickSpacing: BigInt!
+	hooks: String!
+}
+
+type PancakeSwapInfinityPoolImmutables {
+	id: ID!
+	hooks: String!
+	fee: BigInt!
+	parameters: String!
+}
+
+type BalancerV2PoolImmutables {
+	id: ID!
+	specialization: String!
+}
+
+type BalancerV3PoolImmutables {
+	id: ID!
+	factory: String!
+	swapFeePercentage: BigInt!
+}
+
+type AlgebraIntegralPoolImmutables {
+	id: ID!
+	deployer: String
+	tickSpacing: BigInt
+}
+
+type VelodromeSlipstreamCLPoolImmutables {
+	id: ID!
+	tickSpacing: BigInt!
+}
+
+type VelodromeCPMMPoolImmutables {
+	id: ID!
+	stable: Boolean!
+}
+
 ### RAW EVENT ENTITIES (LEGACY) ###
 
 # type AlgebraIntegral_CustomPool {
