@@ -7,11 +7,16 @@ import {
 import { getEventId } from "./eventId"
 import { getTokenId } from "./tokenId"
 import { globalHandlerConfig } from "./handlerConfig"
+import { Protocol } from "./protocols"
 
 BalancerV2Vault.PoolRegistered.handler(async ({ event, context }) => {
 	const poolId = `${event.chainId}:${event.params.poolId}`
 
-	await incrementChainMetricsForPool(context, event.chainId, "BalancerV2")
+	await incrementChainMetricsForPool(
+		context,
+		event.chainId,
+		Protocol.BalancerV2,
+	)
 
 	context.Pool.set({
 		id: poolId,
@@ -34,13 +39,17 @@ BalancerV2Vault.PoolRegistered.handler(async ({ event, context }) => {
 BalancerV3Vault.PoolRegistered.handler(async ({ event, context }) => {
 	const poolId = `${event.chainId}:${event.params.pool}`
 
-	await incrementChainMetricsForPool(context, event.chainId, "BalancerV3")
+	await incrementChainMetricsForPool(
+		context,
+		event.chainId,
+		Protocol.BalancerV3,
+	)
 
 	context.Pool.set({
 		id: poolId,
 		chainId: event.chainId,
 		address: event.params.pool,
-		protocol: "BalancerV3",
+		protocol: Protocol.BalancerV3,
 		creatorContract: event.srcAddress,
 		createdAt: event.block.timestamp,
 		createdAtBlock: event.block.number,

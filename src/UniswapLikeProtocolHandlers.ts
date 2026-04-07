@@ -21,7 +21,7 @@ import {
 import { globalHandlerConfig } from "./handlerConfig"
 import { getEventId } from "./eventId"
 import { getTokenId } from "./tokenId"
-import { ADDRESS_ZERO } from "./utils"
+import { Protocol } from "./protocols"
 
 type EventWithToken0AndToken1 = {
 	chainId: number
@@ -35,7 +35,7 @@ async function addTokens0And1AndPoolTokens(
 	poolId: string,
 	event: EventWithToken0AndToken1,
 	context: HandlerContext,
-	protocol: string,
+	protocol: Protocol,
 ): Promise<void> {
 	const token0Id = getTokenId(event.chainId, event.params.token0)
 	const token1Id = getTokenId(event.chainId, event.params.token1)
@@ -93,7 +93,12 @@ AlgebraIntegral.CustomPool.handler(async ({ event, context }) => {
 		pool: event.params.pool,
 	}
 
-	await addTokens0And1AndPoolTokens(poolId, event, context, "AlgebraIntegral")
+	await addTokens0And1AndPoolTokens(
+		poolId,
+		event,
+		context,
+		Protocol.AlgebraIntegral,
+	)
 
 	context.Pool.set({
 		id: poolId,
@@ -118,7 +123,12 @@ AlgebraIntegral.Pool.handler(async ({ event, context }) => {
 		pool: event.params.pool,
 	}
 
-	await addTokens0And1AndPoolTokens(poolId, event, context, "AlgebraIntegral")
+	await addTokens0And1AndPoolTokens(
+		poolId,
+		event,
+		context,
+		Protocol.AlgebraIntegral,
+	)
 
 	context.Pool.set({
 		id: poolId,
@@ -144,13 +154,18 @@ UniswapV2Factory.PairCreated.handler(async ({ event, context }) => {
 		pairNumber: event.params.pairNumber,
 	}
 
-	await addTokens0And1AndPoolTokens(poolId, event, context, "UniswapV2")
+	await addTokens0And1AndPoolTokens(
+		poolId,
+		event,
+		context,
+		Protocol.UniswapV2,
+	)
 
 	context.Pool.set({
 		id: poolId,
 		chainId: event.chainId,
 		address: event.params.pair,
-		protocol: "UniswapV2",
+		protocol: Protocol.UniswapV2,
 		creatorContract: event.srcAddress,
 		createdAt: event.block.timestamp,
 		createdAtBlock: event.block.number,
@@ -171,7 +186,12 @@ UniswapV3Factory.PoolCreated.handler(async ({ event, context }) => {
 		pool: event.params.pool,
 	}
 
-	await addTokens0And1AndPoolTokens(poolId, event, context, "UniswapV3")
+	await addTokens0And1AndPoolTokens(
+		poolId,
+		event,
+		context,
+		Protocol.UniswapV3,
+	)
 
 	context.Pool.set({
 		id: poolId,
@@ -193,14 +213,14 @@ VelodromeSlipstreamCLFactory.PoolCreated.handler(async ({ event, context }) => {
 		poolId,
 		event,
 		context,
-		"VelodromeSlipstreamCL",
+		Protocol.VelodromeSlipstreamCL,
 	)
 
 	context.Pool.set({
 		id: poolId,
 		chainId: event.chainId,
 		address: event.params.pool,
-		protocol: "VelodromeSlipstreamCL",
+		protocol: Protocol.VelodromeSlipstreamCL,
 		creatorContract: event.srcAddress,
 		createdAt: event.block.timestamp,
 		createdAtBlock: event.block.number,
@@ -218,13 +238,18 @@ VelodromeSlipstreamCLFactory.PoolCreated.handler(async ({ event, context }) => {
 VelodromeCPMMFactory.PoolCreated.handler(async ({ event, context }) => {
 	const poolId = `${event.chainId}:${event.params.pool}`
 
-	await addTokens0And1AndPoolTokens(poolId, event, context, "VelodromeCPMM")
+	await addTokens0And1AndPoolTokens(
+		poolId,
+		event,
+		context,
+		Protocol.VelodromeCPMM,
+	)
 
 	context.Pool.set({
 		id: poolId,
 		chainId: event.chainId,
 		address: event.params.pool,
-		protocol: "VelodromeCPMM",
+		protocol: Protocol.VelodromeCPMM,
 		creatorContract: event.srcAddress,
 		createdAt: event.block.timestamp,
 		createdAtBlock: event.block.number,

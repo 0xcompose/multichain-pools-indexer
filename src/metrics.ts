@@ -1,10 +1,7 @@
-import type {
-	ChainMetrics,
-	PoolsProtocolDistributionMetrics,
-	Token,
-} from "generated"
+import type { ChainMetrics, Token } from "generated"
 import type { HandlerContext } from "generated/src/Types"
 import { TokenId } from "./tokenId"
+import { Protocol } from "./protocols"
 
 const ZERO_CHAIN_METRICS: Omit<ChainMetrics, "id" | "chainId"> = {
 	totalPools: 0,
@@ -14,7 +11,7 @@ const ZERO_CHAIN_METRICS: Omit<ChainMetrics, "id" | "chainId"> = {
 export async function incrementChainMetricsForPool(
 	context: HandlerContext,
 	chainId: number,
-	protocol: string,
+	protocol: Protocol,
 ): Promise<void> {
 	const chainIdStr = String(chainId)
 	let chainMetrics = await context.ChainMetrics.get(chainIdStr)
@@ -36,7 +33,7 @@ export async function incrementChainMetricsForPool(
 		dist = {
 			id: distId,
 			chainId,
-			protocol: protocol as PoolsProtocolDistributionMetrics["protocol"],
+			protocol,
 			poolCount: 0,
 		}
 	}
