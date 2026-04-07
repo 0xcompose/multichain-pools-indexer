@@ -26,7 +26,7 @@ type Pool {
 	protocol: DexProtocol!
 	creatorContract: String!
 	poolTokens: [PoolToken!]! @derivedFrom(field: "pool")
-	creationTxHash: String!
+	# creationTxHash: String!
 	createdAt: Int!
 	createdAtBlock: Int!
 }
@@ -38,103 +38,94 @@ type PoolToken {
 	tokenIndex: Int!
 }
 
-### EVENTS ENTITIES (USED FOR INDEXING, BUT NOT ACTUALLY STORED!) ###
+### RAW EVENT ENTITIES (LEGACY) ###
 
-type AlgebraIntegral_CustomPool {
-	id: ID!
-	deployer: String!
-	token0: String!
-	token1: String!
-	pool: String!
-}
+# type AlgebraIntegral_CustomPool {
+# 	id: ID!
+# 	deployer: String!
+# 	token0: String!
+# 	token1: String!
+# 	pool: String!
+# }
 
-type AlgebraIntegral_Pool {
-	id: ID!
-	token0: String!
-	token1: String!
-	pool: String!
-}
+# type AlgebraIntegral_Pool {
+# 	id: ID!
+# 	token0: String!
+# 	token1: String!
+# 	pool: String!
+# }
 
-type UniswapV2Factory_PairCreated {
-	id: ID!
-	token0: String!
-	token1: String!
-	pair: String!
-	pairNumber: BigInt!
-}
+# type UniswapV2Factory_PairCreated {
+# 	id: ID!
+# 	token0: String!
+# 	token1: String!
+# 	pair: String!
+# 	pairNumber: BigInt!
+# }
 
-type PoolLatestReserves {
-	id: ID!
-	pool: String! @index
-	reserve0: BigInt!
-	reserve1: BigInt!
-	updatedAt: Int!
-	updatedAtBlock: Int!
-}
+# type UniswapV3Factory_PoolCreated {
+# 	id: ID!
+# 	token0: String!
+# 	token1: String!
+# 	fee: BigInt!
+# 	tickSpacing: BigInt!
+# 	pool: String!
+# }
 
-type UniswapV3Factory_PoolCreated {
-	id: ID!
-	token0: String!
-	token1: String!
-	fee: BigInt!
-	tickSpacing: BigInt!
-	pool: String!
-}
+# type VelodromeSlipstreamCLFactory_PoolCreated {
+# 	id: ID!
+# 	token0: String!
+# 	token1: String!
+# 	tickSpacing: BigInt!
+# 	pool: String!
+# }
 
-type VelodromeSlipstreamCLFactory_PoolCreated {
-	id: ID!
-	token0: String!
-	token1: String!
-	tickSpacing: BigInt!
-	pool: String!
-}
+# type VelodromeCPMMFactory_PoolCreated {
+# 	id: ID!
+# 	token0: String!
+# 	token1: String!
+# 	stable: Boolean!
+# 	pool: String!
+# 	_4: BigInt!
+# }
 
-type VelodromeCPMMFactory_PoolCreated {
-	id: ID!
-	token0: String!
-	token1: String!
-	stable: Boolean!
-	pool: String!
-	_4: BigInt!
-}
+# type UniV4PoolManager_Initialize {
+# 	id: ID!
+# 	poolId: String!
+# 	currency0: String!
+# 	currency1: String!
+# 	fee: BigInt!
+# 	tickSpacing: BigInt!
+# 	hooks: String!
+# 	sqrtPriceX96: BigInt!
+# 	tick: BigInt!
+# }
 
-type UniV4PoolManager_Initialize {
-	id: ID!
-	poolId: String!
-	currency0: String!
-	currency1: String!
-	fee: BigInt!
-	tickSpacing: BigInt!
-	hooks: String!
-	sqrtPriceX96: BigInt!
-	tick: BigInt!
-}
+# type CLPoolManager_Initialize {
+# 	id: ID!
+# 	poolId: String!
+# 	currency0: String!
+# 	currency1: String!
+# 	hooks: String!
+# 	fee: BigInt!
+# 	parameters: String!
+# 	sqrtPriceX96: BigInt!
+# 	tick: BigInt!
+# }
 
-type CLPoolManager_Initialize {
-	id: ID!
-	poolId: String!
-	currency0: String!
-	currency1: String!
-	hooks: String!
-	fee: BigInt!
-	parameters: String!
-	sqrtPriceX96: BigInt!
-	tick: BigInt!
-}
+# type BalancerV2Vault_PoolRegistered {
+# 	id: ID!
+# 	poolId: String!
+# 	poolAddress: String!
+# 	specialization: String!
+# }
 
-type BalancerV2Vault_PoolRegistered {
-	id: ID!
-	poolId: String!
-	poolAddress: String!
-	specialization: String!
-}
-
-type BalancerV3Vault_PoolRegistered {
-	id: ID!
-	pool_id: String!
-	factory: String!
-	swapFeePercentage: BigInt!
-}
+# type BalancerV3Vault_PoolRegistered {
+# 	id: ID!
+# 	pool_id: String!
+# 	factory: String!
+# 	swapFeePercentage: BigInt!
+# }
 
 ### METRICS ###
 
