@@ -38,3 +38,7 @@ build
 
 # Reference files
 hyperindex
+
+# IDE
+.vscode
+.cursor
