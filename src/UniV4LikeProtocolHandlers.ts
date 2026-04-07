@@ -106,13 +106,6 @@ PoolManager.Initialize.handler(async ({ event, context }) => {
 CLPoolManager.Initialize.handler(async ({ event, context }) => {
 	const id = getPoolId(event.chainId, event.params.id)
 
-	await addCurrencies0And1AndPoolTokens(
-		id,
-		event,
-		context,
-		Protocol.PancakeSwapInfinity,
-	)
-
 	context.Pool.set({
 		id,
 		chainId: event.chainId,
@@ -122,6 +115,13 @@ CLPoolManager.Initialize.handler(async ({ event, context }) => {
 		createdAt: event.block.timestamp,
 		createdAtBlock: event.block.number,
 	})
+
+	await addCurrencies0And1AndPoolTokens(
+		id,
+		event,
+		context,
+		Protocol.PancakeSwapInfinity,
+	)
 
 	context.PancakeSwapInfinityPoolImmutables.set({
 		id,
