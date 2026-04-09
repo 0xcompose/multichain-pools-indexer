@@ -11,7 +11,7 @@ services:
       - "${ENVIO_PG_PORT:-5433}:5432"
 
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - indexer_db_data:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: ${ENVIO_PG_PASSWORD:-testing}
       POSTGRES_USER: ${ENVIO_PG_USER:-postgres}
@@ -123,7 +123,7 @@ services:
       - my-proxy-net
 
 volumes:
-  db_data:
+  indexer_db_data:
   token_api_data:
 
 networks:
