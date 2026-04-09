@@ -6,6 +6,9 @@ prepare:
 update-indexer:
 	docker compose up -d --build --no-deps indexer
 
+update-front:
+	docker compose up -d --build --no-deps frontend
+
 run: 
 	docker compose build
 	docker compose up -d
